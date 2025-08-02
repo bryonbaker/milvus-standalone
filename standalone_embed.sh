@@ -22,7 +22,14 @@ EOF
         echo "user.yaml file does not exist. Please try to create it in the current directory."
         exit 1
     fi
+    
+    [ -d "$PWD/volumes/milvus" ] || mkdir -p "$PWD/volumes/milvus"
+    if [ $? -ne 0 ]; then
+        echo "Failed to create volumes directory."
+        exit 1
+    fi
 
+    echo "Starting Milvus in standalone mode with embedded etcd..."
     podman run -d \
         --name milvus-standalone \
         --security-opt seccomp=unconfined \
